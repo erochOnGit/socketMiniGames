@@ -8,7 +8,9 @@ app.get("/", function(req, res) {
 });
 
 var numUsers = 0;
+var ready = 0;
 
+var playing = false;
 io.on("connection", function(socket) {
   var addedUser = false;
   console.log("socket");
@@ -30,12 +32,14 @@ io.on("connection", function(socket) {
       username: socket.username,
       numUsers: numUsers
     });
+    console.log("user", socket.username, "is logged in");
   });
 
   // when the user disconnects.. perform this
   socket.on("disconnect", () => {
     console.log("meh il se casse");
     if (addedUser) {
+      ("");
       --numUsers;
 
       // echo globally that this client has left
@@ -45,7 +49,18 @@ io.on("connection", function(socket) {
       });
     }
   });
+  socket.on("player ready", () => {
+    console.log("user", socket.username, "is Ready");
+    ++ready;
+    if (ready >= numUsers) {
+      console.log("All users are ready");
+      ready = true;
+      socket.emit("game start", "nié");
+      socket.broadcast.emit("game start", "nié");
+    }
+  });
 });
+
 http.listen(port, function() {
   console.log("listening on *:" + port);
 });
