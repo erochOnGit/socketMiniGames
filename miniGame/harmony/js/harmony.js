@@ -11,21 +11,21 @@ class HarmonyClass {
         this.timerActual = timerDuration
     }
 
-    setRole(name) {
-        this.role.name = name
+    setRole(name, socketRole) {
+        socketRole.name = name
         switch (name) {
             case 'orgasme':
-                this.role.logic = Orgasme
+                socketRole.logic = Orgasme
                 break;
 
             case 'hand':
-                this.role.logic = Caress
-                this.role.logic.img = 'hand'
+                socketRole.logic = Caress
+                socketRole.logic.img = 'hand'
                 break;
 
             case 'neck':
-                this.role.logic = Caress
-                this.role.logic.img = 'neck'
+                socketRole.logic = Caress
+                socketRole.logic.img = 'neck'
                 break;
 
             default:
@@ -37,16 +37,27 @@ class HarmonyClass {
     nextStep(socket) {
         this.step++
         console.log(this.step)
+        let step = {}
         switch (this.step) {
             case 1:
-                return Intro.show()
+                step = {
+                    code: Intro.show(),
+                    event: false
+                }
+                return step
                 break;
             case 2:
-                return this.role.logic.showInstructions()
+                step = {
+                    code: socket.role.logic.showInstructions(),
+
+                    event: false
+                }
+                return step
                 break;
 
             case 3:
                 let lastTime = Date.now()
+                // socket.emit('harmony role', )
 
                 let interval = setInterval(() => {
                     this.timerActual--
@@ -56,14 +67,21 @@ class HarmonyClass {
                         clearInterval(interval)
                     }
                 }, 1000)
-
-                return this.role.logic.showGame()
+                step = {
+                    code: socket.role.logic.showGame(),
+                    event: true
+                }
+                return step
                 break;
 
             case 4:
                 this.step = 0
                 this.timerActual = this.timerDuration
-                return this.role.logic.showEnd()
+                step = {
+                    code: socket.role.logic.showEnd(),
+                    event: false
+                }
+                return step
 
                 break
             default:

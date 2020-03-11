@@ -11,38 +11,8 @@ let Caress = {
                 <div id="timer"></div>
                 <img src="assets/${this.img}.png" alt="">
                 <script>
-                document.getElementById('timer').style.width = time;
-
-                let harmony = {}
-
-                harmony.hisTurn = false
-                harmony.mouseIsDown = false
-                harmony.mousePoint = 0
-
-                document.body.addEventListener('mousedown', listener1 = () => {
-                    harmony.mouseIsDown = true
-                })
                 
-                document.body.addEventListener('mousemove', listener2 = () => {
-                    if (harmony.mouseIsDown && harmony.hisTurn) {
-                        harmony.mousePoint++
-                    } else if (harmony.mouseIsDown && !harmony.hisTurn) {
-                        harmony.mousePoint--
-                    }
-                    console.log(harmony.mousePoint)
-                })
-                
-                document.body.addEventListener('mouseup', listener3 = () => {
-                    harmony.mouseIsDown = false
-                })
-                
-                harmony.interval1 = setInterval(()=>{
-                    if (Math.random() > .5) {
-                        harmony.hisTurn = !harmony.hisTurn
-                    }
-                    harmony.hisTurn ? document.body.style.background = 'white' : document.body.style.background = 'red'
-                }, 500)
-
+console.log('ui')
                 </script>
             `
         },

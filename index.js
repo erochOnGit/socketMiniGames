@@ -8,15 +8,15 @@ var Harmony = require('./miniGame/harmony/js/harmony')
 
 app.use(express.static('public'))
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/game/ouestpluggy/", function(req, res) {
+app.get("/game/ouestpluggy/", function (req, res) {
   res.sendFile(__dirname + "/miniGame/ouestpluggy/index.html");
 });
 
-app.get("/game/harmony/", function(req, res) {
+app.get("/game/harmony/", function (req, res) {
   res.sendFile(__dirname + "/miniGame/harmony/index.html");
 });
 
@@ -28,15 +28,15 @@ let harmony = new Harmony(
   10 // Timer duration in seconds
 )
 var playing = false;
-io.on("connection", function(socket) {
+io.on("connection", function (socket) {
   var addedUser = false;
   console.log("socket");
 
-  socket.on("chat message", function(msg) {
+  socket.on("chat message", function (msg) {
     io.emit("chat message", { msg: msg, user: socket.username || "" });
   });
 
-  socket.on("add user", function(username) {
+  socket.on("add user", function (username) {
     addedUser = true;
     socket.username = username;
     ++numUsers;
@@ -72,16 +72,22 @@ io.on("connection", function(socket) {
     if (ready >= numUsers) {
       console.log("All users are ready");
       ready = true;
-      harmony.setRole('hand')
-      socket.emit("game update", harmony.nextStep(socket));
+      socket.role = {}
+      harmony.setRole('hand',socket.role)
+      let step = harmony.nextStep(socket)
+      socket.emit("game update", step.code);
       socket.broadcast.emit("game update", "nié");
     }
   });
   socket.on('next step', () => {
-    socket.emit("game update", harmony.nextStep(socket));
+    let step = harmony.nextStep(socket)
+    socket.emit("game update", step.code);
+    if (step.event == true) {
+      socket.emit("add event")
+    }
   })
 });
 
-http.listen(port, function() {
+http.listen(port, function () {
   console.log("listening on *:" + port);
 });
