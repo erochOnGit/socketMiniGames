@@ -7,6 +7,11 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/game/ouestpluggy/", function(req, res) {
+  console.log("yen a qui veulent jouer")
+  res.sendFile(__dirname + "/miniGame/ouestpluggy/index.html");
+});
+
 var numUsers = 0;
 var ready = 0;
 
