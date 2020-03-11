@@ -1,20 +1,32 @@
 var app = require("express")();
+var express = require("express");
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var port = process.env.PORT || 3000;
+
+var Harmony = require('./miniGame/harmony/js/harmony')
+
+app.use(express.static('public'))
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/game/ouestpluggy/", function(req, res) {
-  console.log("yen a qui veulent jouer")
   res.sendFile(__dirname + "/miniGame/ouestpluggy/index.html");
+});
+
+app.get("/game/harmony/", function(req, res) {
+  res.sendFile(__dirname + "/miniGame/harmony/index.html");
 });
 
 var numUsers = 0;
 var ready = 0;
 
+let harmony = new Harmony(
+  2, // Steps : 0=Intro, 1=instructions, 2=game, 3=results
+  2 // Timer duration in seconds
+)
 var playing = false;
 io.on("connection", function(socket) {
   var addedUser = false;
@@ -60,10 +72,14 @@ io.on("connection", function(socket) {
     if (ready >= numUsers) {
       console.log("All users are ready");
       ready = true;
-      socket.emit("game start", "nié");
-      socket.broadcast.emit("game start", "nié");
+      harmony.setRole('hand')
+      socket.emit("game update", harmony.nextStep(socket));
+      socket.broadcast.emit("game update", "nié");
     }
   });
+  socket.on('next step', () => {
+    socket.emit("game update", harmony.nextStep(socket));
+  })
 });
 
 http.listen(port, function() {
