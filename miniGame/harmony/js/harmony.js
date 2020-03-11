@@ -61,6 +61,8 @@ class HarmonyClass {
                 break;
 
             case 4:
+                this.step = 0
+                this.timerActual = this.timerDuration
                 return this.role.logic.showEnd()
 
                 break

@@ -24,8 +24,8 @@ var numUsers = 0;
 var ready = 0;
 
 let harmony = new Harmony(
-  2, // Steps : 0=Intro, 1=instructions, 2=game, 3=results
-  2 // Timer duration in seconds
+  0, // Steps : 0=Intro, 1=instructions, 2=game, 3=results
+  10 // Timer duration in seconds
 )
 var playing = false;
 io.on("connection", function(socket) {
