@@ -4,7 +4,7 @@ let Orgasme = {
             <p>Tu es le</p>
             <h2>Chef d'orgasme</h2>
             <p>Tu devras guider les autres joueurs</p>
-            <button onclick="nextStepHarmony()" >Prêt.e ?</button>
+            <button onclick="harmnyrdy()" >Prêt.e ?</button>
         `
     },
     showGame() {
