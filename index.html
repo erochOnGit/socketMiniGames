@@ -98,58 +98,58 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-      let time = 0
-      let users = []
-      var socket = io()
-      document.querySelector('form#username').onsubmit = function() {
-        let input = document.querySelector('#username input')
-        socket.emit('add user', input.value)
-        input.value = ''
-        return false
-      }
-      document.querySelector('form#message').onsubmit = function() {
-        let input = document.querySelector('#m')
-        socket.emit('chat message', input.value)
-        input.value = ''
-        return false
-      }
-      document.querySelector('form#ready').onsubmit = function(e) {
-        e.preventDefault()
-        socket.emit('player ready')
-        document.querySelector('form#ready').innerHTML =
-          '<div>Waiting for other players</div>'
-        return false
-      }
+      let time = 0;
+      let users = [];
+      var socket = io();
 
-      socket.on('loggedin', function(user) {
-        users.push(user)
-        document.querySelector('#username').style.display = 'none'
-        document.querySelector('#ready').style.display = 'block'
-        document.querySelector('#game').innerHTML = '<div> game html </div>'
-      })
-      socket.on('chat message', function(req) {
-        let li = document.createElement('li')
-        li.innerHTML = "<div class='name'>" + req.user + ' : </div>' + req.msg
-        document.querySelector('.messages').appendChild(li)
-        window.scrollTo(0, document.body.scrollHeight)
-      })
-      socket.on('user joined', function(user) {
-        users.push(user)
-      })
-      socket.on('user left', function(user) {
+      document.querySelector("form#username").onsubmit = function() {
+        let input = document.querySelector("#username input");
+        socket.emit("add user", input.value);
+        input.value = "";
+        return false;
+      };
+      document.querySelector("form#message").onsubmit = function() {
+        let input = document.querySelector("#m");
+        socket.emit("chat message", input.value);
+        input.value = "";
+        return false;
+      };
+      document.querySelector("form#ready").onsubmit = function(e) {
+        e.preventDefault();
+        socket.emit("player ready");
+        document.querySelector("form#ready").innerHTML =
+          "<div>Waiting for other players</div>";
+        return false;
+      };
+
+      socket.on("loggedin", function(user) {
+        users.push(user);
+        document.querySelector("#username").style.display = "none";
+        document.querySelector("#ready").style.display = "block";
+        document.querySelector("#game").innerHTML = "<div> game html </div>";
+      });
+      socket.on("chat message", function(req) {
+        let li = document.createElement("li");
+        li.innerHTML = "<div class='name'>" + req.user + " : </div>" + req.msg;
+        document.querySelector(".messages").appendChild(li);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      socket.on("user joined", function(user) {
+        users.push(user);
+      });
+      socket.on("user left", function(user) {
         for (let i = 0; i < users.length; i++) {
           if (users[i].username == user.username) {
-            users.splice(i, 1)
+            users.splice(i, 1);
           }
         }
-      })
-      socket.on('game update', gameView => {
-        console.log(gameView)
-        document.getElementById('game').innerHTML = gameView
-      })
-      function nextStepHarmony() {
-        socket.emit('next step')
-      }
+      });
+      socket.on("game start", () => {
+        socket.emit("game start");
+      });
+      socket.on("game next", () => {
+        socket.emit("game next");
+      });
       function nextStepCulture() {
         socket.emit('next step')
       }
@@ -158,67 +158,79 @@
         socket.emit('next step', e)
       }
 
-      socket.on('update time', t => {
+      socket.on("game update", gameView => {
+        document.getElementById("game").innerHTML = gameView;
+      });
+      function harmnyrdy() {
+        socket.emit("player rdy");
+      }
+      function nextStepHarmony() {
+        socket.emit("next step");
+      }
+
+      socket.on("update time", t => {
         if (t.time <= 0) {
-          //socket.emit('next step')
+          removeHarmonyCaress();
         }
-      })
-      socket.on('add event', () => {
-        console.log('bref')
-        initHarmonyCaress()
-      })
-
+      });
+      socket.on("add event", () => {
+        console.log("bref");
+        initHarmonyCaress();
+      });
+      socket.on("end", code => {
+        document.querySelector("#game").innerHTML = code;
+      });
       function initHarmonyCaress(params) {
-        document.getElementById('timer').style.width = time
+        document.getElementById("timer").style.width = time;
 
-        let harmony = {}
+        let harmony = {};
 
-        harmony.hisTurn = false
-        harmony.mouseIsDown = false
-        harmony.mousePoint = 0
+        harmony.hisTurn = false;
+        harmony.mouseIsDown = false;
+        harmony.mousePoint = 0;
 
         document.body.addEventListener(
-          'mousedown',
+          "mousedown",
           (listener1 = () => {
-            harmony.mouseIsDown = true
+            harmony.mouseIsDown = true;
           })
-        )
+        );
 
         document.body.addEventListener(
-          'mousemove',
+          "mousemove",
           (listener2 = () => {
             if (harmony.mouseIsDown && harmony.hisTurn) {
-              harmony.mousePoint++
+              harmony.mousePoint++;
             } else if (harmony.mouseIsDown && !harmony.hisTurn) {
-              harmony.mousePoint--
+              harmony.mousePoint--;
             }
-            console.log(harmony.mousePoint)
+            console.log(harmony.mousePoint);
           })
-        )
+        );
 
         document.body.addEventListener(
-          'mouseup',
+          "mouseup",
           (listener3 = () => {
-            harmony.mouseIsDown = false
+            harmony.mouseIsDown = false;
           })
-        )
+        );
 
         harmony.interval1 = setInterval(() => {
           if (Math.random() > 0.5) {
-            harmony.hisTurn = !harmony.hisTurn
+            harmony.hisTurn = !harmony.hisTurn;
           }
           harmony.hisTurn
-            ? (document.body.style.background = 'white')
-            : (document.body.style.background = 'red')
-        }, 500)
+            ? (document.body.style.background = "white")
+            : (document.body.style.background = "red");
+        }, 500);
       }
       function removeHarmonyCaress() {
-        document.body.style.background = 'white'
+        document.body.style.background = "white";
 
-        document.body.removeEventListener('mousedown', listener1)
-        document.body.removeEventListener('mousemove', listener2)
-        document.body.removeEventListener('mouseup', listener3)
-        clearInterval(this.interval1)
+        document.body.removeEventListener("mousedown", listener1);
+        document.body.removeEventListener("mousemove", listener2);
+        document.body.removeEventListener("mouseup", listener3);
+        clearInterval(this.interval1);
       }
     </script>
   </body>

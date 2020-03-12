@@ -3,7 +3,7 @@ let Caress = {
             return `
                 <p>Tu t'occupera</p>
                 <h2>du bras</h2>
-                <button onclick="nextStepHarmony()" >Prêt.e ?</button>
+                <button onclick="harmnyrdy()" >Prêt.e ?</button>
             `
         },
         showGame() {
