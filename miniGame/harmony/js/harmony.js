@@ -72,8 +72,16 @@ class HarmonyClass {
             socket.emit("end", step.code);
             socket.broadcast.emit("end", step.code);
             clearInterval(interval);
+            clearInterval(interval2);
           }
         }, 1000);
+
+        let interval2 = setInterval(() => {
+            let roles = ['orgasme', 'hand', 'neck']
+            let role = roles[Math.floor(Math.random()*((roles.length-1)+1))]
+            socket.emit("harmony game", role);
+          }, 2000);
+
         step = {
           code: socket.role.logic.showGame(),
           event: true
@@ -154,12 +162,14 @@ class HarmonyClass {
   }
   setUp(socket) {
     socket.role = {};
-    console.log("azjierioenfoi")
     let bodyParts = ["orgasme", "hand", "neck"];
+    let rand = Math.round(Math.random() * bodyParts.length - 1)
     this.setRole(
-      bodyParts[Math.round(Math.random() * bodyParts.length - 1)],
+      bodyParts[rand],
       socket.role
     );
+    socket.emit("add event");
+    socket.emit("harmony game start", bodyParts);
   }
 }
 

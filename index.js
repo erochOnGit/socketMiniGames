@@ -99,7 +99,8 @@ io.on("connection", function(socket) {
       socket.emit("game update", step.code);
       socket.broadcast.emit("game next", "nié");
       if (step.event == true) {
-        socket.emit("add event");
+        // socket.emit("add event");
+        // socket.broadcast.emit("add event");
       }
     }
   });
@@ -115,7 +116,8 @@ io.on("connection", function(socket) {
      let step = games[gameIndex].getStep(socket);
     socket.emit("game update", step.code);
       if (step.event == true) {
-        socket.emit("add event");
+        // socket.emit("add event");
+        // socket.broadcast.emit("add event");
       }
   });
   socket.on("next step", () => {

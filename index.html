@@ -215,15 +215,29 @@
             })
           );
 
-          harmony.interval1 = setInterval(() => {
-            if (Math.random() > 0.5) {
-              harmony.hisTurn = !harmony.hisTurn;
-            }
-            harmony.hisTurn
-              ? (document.body.style.background = "white")
-              : (document.body.style.background = "red");
-          }, 500);
+          // harmony.interval1 = setInterval(() => {
+          //   if (Math.random() > 0.5) {
+          //     harmony.hisTurn = !harmony.hisTurn;
+          //   }
+          //   harmony.hisTurn
+          //     ? (document.body.style.background = "white")
+          //     : (document.body.style.background = "red");
+          // }, 500);
         }
+
+        socket.on("harmony game start", role => {
+          harmony.role = role
+        });
+
+        socket.on("harmony game update", role => {
+          console.log(harmony.role, role)
+          if (harmony.role === role) {
+            document.body.style.background = "white"
+          } else {
+            document.body.style.background = "red"
+          }
+        });
+
         function ending(){
           socket.emit("ending")
           document.querySelector("form#ready").innerHTML =
@@ -240,6 +254,7 @@
           document.body.removeEventListener("mouseup", listener3);
           clearInterval(this.interval1);
         }
+      
     </script>
   </body>
 </html>
