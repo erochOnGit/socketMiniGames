@@ -4,10 +4,10 @@ var Caress = require("../views/2b-caress");
 
 class HarmonyClass {
   constructor(step, timerDuration) {
-    this.role = { name: "", logic: null };
     this.step = step;
     this.timerDuration = timerDuration;
     this.timerActual = timerDuration;
+    this.maxStep = 4
   }
 
   setRole(name, socketRole) {
@@ -151,6 +151,15 @@ class HarmonyClass {
       default:
         break;
     }
+  }
+  setUp(socket) {
+    socket.role = {};
+    console.log("azjierioenfoi")
+    let bodyParts = ["orgasme", "hand", "neck"];
+    this.setRole(
+      bodyParts[Math.round(Math.random() * bodyParts.length - 1)],
+      socket.role
+    );
   }
 }
 

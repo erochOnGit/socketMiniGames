@@ -4,6 +4,7 @@ let questions = require('../../public/culture.json')
 class CultureClass {
   constructor() {
     this.step = 0
+    this.maxStep = 4
   }
   test() {
     console.log('youpii')
@@ -84,6 +85,7 @@ class CultureClass {
     return `
   <section id="s3">
     <h1 id="t2">${html}</h1>
+    <button onclick="ending()">Prochain jeu</button>
   </section>
     `
   }
@@ -116,6 +118,37 @@ class CultureClass {
       default:
         break
     }
+  }
+  getStep(socket, data) {
+    let step
+
+    switch (this.step) {
+      case 1:
+        step = {
+          code: this.init(),
+          event: false
+        }
+        return step
+      case 2:
+        step = {
+          code: this.GoQuestion(),
+          event: false
+        }
+        return step
+      case 3:
+        this.step = 0
+        step = {
+          code: this.cholafin(data),
+          event: false
+        }
+        return step
+
+      default:
+        break
+    }
+  }
+  setUp(){
+    console.log("nié")
   }
 }
 

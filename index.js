@@ -22,6 +22,12 @@ let harmony = new Harmony(
   10 // Timer duration in seconds
 );
 let culture = new Culture()
+let gameIndex = 0
+let gameTotal = 1 
+let games = []
+games.push(harmony)
+games.push(culture)
+
 var playing = false;
 io.on("connection", function(socket) {
   var addedUser = false;
@@ -68,10 +74,14 @@ io.on("connection", function(socket) {
     if (ready >= numUsers) {
       ready = 0;
       console.log("All users are ready");
-      socket.role = {};
+      gameIndex =  Math.round(Math.random() *  gameTotal);
+      games[gameIndex].setUp(socket)
       // harmony.setRole("hand", socket.role);
       // let step = harmony.nextStep(socket);
-      let step = culture.nextStep(socket)
+      console.log("----------------")
+      console.log(gameIndex)
+      console.log(socket)
+      let step = games[gameIndex].nextStep(socket)
       socket.emit("game update", step.code);
       socket.broadcast.emit("game start", "nié");
     }
@@ -82,9 +92,10 @@ io.on("connection", function(socket) {
     if (hrnyready >= numUsers) {
       hrnyready = 0;
       harmony.step = 2;
-      let step = harmony.nextStep(socket);
+      // let step = harmony.nextStep(socket);
+      
+      let step = games[gameIndex].nextStep(socket);
       console.log(step)
- 
       socket.emit("game update", step.code);
       socket.broadcast.emit("game next", "nié");
       if (step.event == true) {
@@ -94,22 +105,27 @@ io.on("connection", function(socket) {
   });
   socket.on("game start", () => {
     console.log("meh", socket.username);
-    console.log("meh", socket);
-    socket.role = {};
-    harmony.setRole("neck", socket.role);
-    let step = harmony.getStep(socket);
+    games[gameIndex].setUp(socket)
+
+    let step = games[gameIndex].getStep(socket);
     socket.emit("game update", step.code);
   });
+  
   socket.on("game next", () => {
-     let step = harmony.getStep(socket);
+     let step = games[gameIndex].getStep(socket);
     socket.emit("game update", step.code);
       if (step.event == true) {
         socket.emit("add event");
       }
   });
   socket.on("next step", () => {
-    let step = harmony.nextStep(socket);
+    // let step = harmony.nextStep(socket);
+    let step = games[gameIndex].nextStep(socket);
     socket.emit("game update", step.code);
+
+  });
+
+  socket.on("ending", () => {
 
   });
 });

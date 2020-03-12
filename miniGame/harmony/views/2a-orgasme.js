@@ -16,6 +16,7 @@ let Orgasme = {
     showEnd() {
         return `
             <p>Orgasme fin</p>
+            <button onclick="ending()">Prochain jeu</button>
         `
     }
 }

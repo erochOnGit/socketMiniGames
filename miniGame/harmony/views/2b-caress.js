@@ -27,6 +27,7 @@ console.log('ui')
             return `
             <p>Tes points</p>
                 <h2>harmony.mousePoint</h2>
+                <button onclick="ending()">Prochain jeu</button>
             `
         }
 }
