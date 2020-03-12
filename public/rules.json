@@ -1,0 +1,39 @@
+{
+  "rules": [
+    {
+      "ID_rule": 1,
+      "title": "Culture Q",
+      "rule": "Trouve la bonne réponse"
+    },
+    {
+      "ID_rule": 2,
+      "title": "Parmis ces réponses...",
+      "rule": "à tours de rôle sélectionnez une bonne réponse parmis les propositions. Dès qu'un joueur clique sur l'unique mauvaise réponse la partie est finie"
+    },
+    {
+      "ID_rule": 3,
+      "title": "Hollywood boulevard ou Hollywood Boulard ?",
+      "rule": "Lequel de ces 2 couples est un couple d'acteur X ?"
+    },
+    {
+      "ID_rule": 4,
+      "title": "Info ou Intox ?",
+      "rule": "Dites si l'information suivante est une vraie info ou une fake news"
+    },
+    {
+      "ID_rule": 5,
+      "title": "Téléachatte",
+      "rule": "Dites à quoi sert l'objet suivant"
+    },
+    {
+      "ID_rule": 6,
+      "title": "Orgasmophonie",
+      "rule": "Parmis les sons suivants lesquels sont des orgasme issus de film porno"
+    },
+    {
+      "ID_rule": 7,
+      "title": "Parodie",
+      "rule": "Lequel des titres est un film pornographique ?"
+    }
+  ]
+}
